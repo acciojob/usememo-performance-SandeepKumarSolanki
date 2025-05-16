@@ -22,7 +22,11 @@ header{
     display: flex;
     justify-content: space-between;
     align-items: center;
+    padding: 7px;
+    border-bottom: 2px solid #ddd;
+
 }
+
 
 .filters{
     margin-top: 1rem;
@@ -52,10 +56,10 @@ header{
     padding: 0;
 }
 
-.task{
+/* .task{
     padding: 7px;
     border-bottom: 1px solid #ddd;
-}
+} */
 
 .completed{
     text-decoration: line-through;

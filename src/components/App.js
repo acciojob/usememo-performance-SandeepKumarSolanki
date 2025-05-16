@@ -7,7 +7,7 @@ const generateTasks = () => {
   for (let i = 1; i <= 50; i++) {
     tasks.push({
       id: i,
-      title: `Task ${i}`,
+      title: `Todo ${i}`,
       completed: i <= 25,
     });
   }
@@ -47,7 +47,7 @@ const App = () => {
   }, [filter, tasks]);
 
   return (
-    <div className={`app ${darkMode ? 'dark' : ''}`}>
+    <div className={`app ${darkMode ? 'dark' : ''}`} >
       <header>
         <h1>📝 Todo App (useMemo)</h1>
         <button onClick={() => setDarkMode(d => !d)}>
