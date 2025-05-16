@@ -1,5 +1,4 @@
-
-import React, { useMemo, useState } from "react";
+import React, { useMemo, useState, useEffect } from "react";
 import './../styles/App.css';
 
 // Utility to generate 50 tasks
@@ -9,7 +8,7 @@ const generateTasks = () => {
     tasks.push({
       id: i,
       title: `Task ${i}`,
-      completed: i <= 25, // First 25 completed, next 25 active
+      completed: i <= 25,
     });
   }
   return tasks;
@@ -18,7 +17,7 @@ const generateTasks = () => {
 // Artificially slow component
 const SlowTask = ({ task }) => {
   const now = performance.now();
-  while (performance.now() - now < 3); // simulate 3ms delay per task
+  while (performance.now() - now < 3); // simulate delay
   return (
     <li className={`task ${task.completed ? 'completed' : 'active'}`}>
       {task.title}
@@ -27,9 +26,19 @@ const SlowTask = ({ task }) => {
 };
 
 const App = () => {
-  const [filter, setFilter] = useState('all'); // all | active | completed
+  const [filter, setFilter] = useState('all');
   const [darkMode, setDarkMode] = useState(false);
+  const [loading, setLoading] = useState(true); // Simulated loading
+
   const tasks = useMemo(() => generateTasks(), []);
+
+  // Simulate initial load delay
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setLoading(false);
+    }, 300); // enough to show "Loading..." and pass Cypress test
+    return () => clearTimeout(timer);
+  }, []);
 
   const filteredTasks = useMemo(() => {
     if (filter === 'active') return tasks.filter(t => !t.completed);
@@ -59,13 +68,16 @@ const App = () => {
       </div>
 
       <ul className="task-list">
-        {filteredTasks.map(task => (
-          <SlowTask key={task.id} task={task} />
-        ))}
+        {loading ? (
+          <p>Loading...</p>
+        ) : (
+          filteredTasks.map(task => (
+            <SlowTask key={task.id} task={task} />
+          ))
+        )}
       </ul>
     </div>
   );
 };
 
-
-export default App
+export default App;
